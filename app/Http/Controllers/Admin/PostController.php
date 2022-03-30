@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Model\Post;
+use App\Model\Category;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -18,7 +19,8 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::all();
-        return view('admin.posts.index', compact('posts'));
+        $categories = Category::all();
+        return view('admin.posts.index', compact('posts', 'categories'));
     }
 
     /**
@@ -28,8 +30,10 @@ class PostController extends Controller
      */
     public function create()
     {
+
         $post = new Post();
-        return view('admin.posts.create', compact('post'));
+        $categories = Category::all();
+        return view('admin.posts.create', compact('post', 'categories'));
     }
 
     /**
@@ -38,14 +42,28 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Category $categories)
     {
+        $request->validate(
+            [
+                'title' => ['required', 'string', 'min:5', 'max:255'],
+                'image' => 'required|string',
+                'content' => 'required|string',
+                'category_id' => 'nullable|exists:categories,id'
+            ],
+            [
+                'required' => 'Field :attribute is obbligatory!',
+                'title.unique' => "A post called $request->title already exist!",
+                'title.min' => "$request->title must be longer then 5 caracters!"
+            ]
+        );
+
         $data = $request->all();
         $post = new Post();
         $post->fill($data);
         $post->save();
 
-        return redirect()->route('admin.posts.show', compact('post'));
+        return redirect()->route('admin.posts.show', compact('post', 'categories'));
     }
 
     /**
@@ -65,9 +83,10 @@ class PostController extends Controller
      * @param  \App\s  $s
      * @return \Illuminate\Http\Response
      */
-    public function edit(Post $post)
+    public function edit(Post $post, Category $categories)
     {
-        return view('admin.posts.edit', compact('post'));
+        $categories = Category::all();
+        return view('admin.posts.edit', compact('post', 'categories'));
     }
 
     /**

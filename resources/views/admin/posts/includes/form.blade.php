@@ -28,6 +28,18 @@
         <div class="col-12 text-center">
         <div class="h-100 w-100 d-flex justify-content-between align-items-start my-5">
 
+        <div class="form-group">
+            <label for="category">Category</label>
+            <select class="form-control" name="category_id">
+                <option value="">No Category</option>
+                @foreach ($categories as $category)
+                <option  
+                @if (old('category_id')== $category->id) selected @endif    
+                value="{{$category->id}}">{{$category->label}}</option>
+                @endforeach
+            </select>
+
+        </div>
 
             {{-- button back --}}
             <div>

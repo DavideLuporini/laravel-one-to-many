@@ -22,6 +22,7 @@
                   <i class="fa-solid fa-plus"></i>
                </a>
             </div>
+            {{-- table --}}
         <table class="table">
             <thead class="thead-dark">
               <tr>
@@ -40,6 +41,7 @@
                 <td>{{$post->title}}</td>
                 <td>
                     <span class="badge badge-{{$post->category->color}}">{{$post->category->label}}</span>
+                    
                 </td>
                 <td>{{$post->content}}</td>
                 <td>{{$post->created_at}}</td>
