@@ -27,6 +27,7 @@
               <tr>
                 <th scope="col">ID</th>
                 <th scope="col">TITLE</th>
+                <th scope="col">CATEGORY</th>
                 <th scope="col">CONTENT</th>
                 <th scope="col">DATE</th>
                 <th scope="col">FEATURE</th>
@@ -37,6 +38,9 @@
             <tr>
                 <th scope="row">{{$post->id}}</th>
                 <td>{{$post->title}}</td>
+                <td>
+                    <span class="badge badge-{{$post->category->color}}">{{$post->category->label}}</span>
+                </td>
                 <td>{{$post->content}}</td>
                 <td>{{$post->created_at}}</td>
 
